@@ -2,10 +2,12 @@ import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSliderModule } from '@angular/material/slider';
+import { ListadoMascotas } from "./components/listado-mascotas/listado-mascotas";
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-root',
-  imports: [MatSlideToggleModule, MatSliderModule],
+  imports: [MatSlideToggleModule, MatSliderModule, ListadoMascotas, MatTableModule],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
