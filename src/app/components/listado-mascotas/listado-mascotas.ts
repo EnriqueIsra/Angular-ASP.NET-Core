@@ -1,10 +1,15 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { Mascota } from '../../interfaces/Mascota';
 import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 
 
-const ELEMENT_DATA: Mascota[] = [
+const listMascotas: Mascota[] = [
+  {nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13},
+  {nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13},
+  {nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13},
+  {nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13},
   {nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13},
   {nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13},
   {nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13},
@@ -14,11 +19,19 @@ const ELEMENT_DATA: Mascota[] = [
 @Component({
   standalone: true,
   selector: 'app-listado-mascotas',
-  imports: [CommonModule, MatTableModule],
+  imports: [CommonModule, MatTableModule, MatPaginatorModule],
   templateUrl: './listado-mascotas.html',
   styleUrl: './listado-mascotas.css',
 })
-export class ListadoMascotas {
+export class ListadoMascotas implements AfterViewInit{
   displayedColumns: string[] = ['nombre', 'edad', 'raza', 'color', 'peso'];
-  dataSource = ELEMENT_DATA;
+  dataSource = new MatTableDataSource<Mascota>(listMascotas);
+  
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.paginator._intl.itemsPerPageLabel = 'Items por página'
+  }
 }
+
