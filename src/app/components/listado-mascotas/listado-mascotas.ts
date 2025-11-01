@@ -2,36 +2,42 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { Mascota } from '../../interfaces/Mascota';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
-import {MatSort, MatSortModule} from '@angular/material/sort';
-
-
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 
 const listMascotas: Mascota[] = [
-  {nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13},
-  {nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13},
-  {nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13},
-  {nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13},
-  {nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13},
-  {nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13},
-  {nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13},
-  {nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13},
-  {nombre: 'Mimous Hermosous', edad: 4, raza: 'Gato Peludo', color: 'Negro', peso: 10}
-  
+  { nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13 },
+  { nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13 },
+  { nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13 },
+  { nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13 },
+  { nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13 },
+  { nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13 },
+  { nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13 },
+  { nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13 },
+  { nombre: 'Mimous Hermosous', edad: 4, raza: 'Gato Peludo', color: 'Negro', peso: 10 }
+
 ];
 
 @Component({
   standalone: true,
   selector: 'app-listado-mascotas',
-  imports: [CommonModule, MatTableModule, MatPaginatorModule, MatSortModule, CommonModule],
+  imports: [CommonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    CommonModule,
+    MatFormFieldModule,
+    MatInputModule],
   templateUrl: './listado-mascotas.html',
   styleUrls: ['./listado-mascotas.css'],
 })
-export class ListadoMascotas implements AfterViewInit{
+export class ListadoMascotas implements AfterViewInit {
   displayedColumns: string[] = ['nombre', 'edad', 'raza', 'color', 'peso'];
   dataSource = new MatTableDataSource<Mascota>(listMascotas);
-  
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -39,6 +45,14 @@ export class ListadoMascotas implements AfterViewInit{
     this.dataSource.paginator = this.paginator;
     this.paginator._intl.itemsPerPageLabel = 'Items por página'
     this.dataSource.sort = this.sort;
+  }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 }
 

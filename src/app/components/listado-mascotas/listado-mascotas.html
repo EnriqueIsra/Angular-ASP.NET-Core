@@ -3,6 +3,10 @@
 </div>
 
 <div class="container">
+    <mat-form-field>
+        <mat-label>Buscar</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Buscar" #input autocomplete="off">
+    </mat-form-field>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z0" matSort>
 
         <ng-container matColumnDef="nombre">
@@ -16,17 +20,17 @@
         </ng-container>
 
         <ng-container matColumnDef="raza">
-            <th mat-header-cell *matHeaderCellDef> Raza </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Raza </th>
             <td mat-cell *matCellDef="let element"> {{element.raza}} </td>
         </ng-container>
 
         <ng-container matColumnDef="color">
-            <th mat-header-cell *matHeaderCellDef> Color </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Color </th>
             <td mat-cell *matCellDef="let element"> {{element.color}} </td>
         </ng-container>
 
         <ng-container matColumnDef="peso">
-            <th mat-header-cell *matHeaderCellDef> Peso </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Peso </th>
             <td mat-cell *matCellDef="let element"> {{element.peso}} </td>
         </ng-container>
 
