@@ -6,6 +6,9 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 
 
 const listMascotas: Mascota[] = [
@@ -30,12 +33,15 @@ const listMascotas: Mascota[] = [
     MatSortModule,
     CommonModule,
     MatFormFieldModule,
-    MatInputModule],
+    MatInputModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatButtonModule],
   templateUrl: './listado-mascotas.html',
   styleUrls: ['./listado-mascotas.css'],
 })
 export class ListadoMascotas implements AfterViewInit {
-  displayedColumns: string[] = ['nombre', 'edad', 'raza', 'color', 'peso'];
+  displayedColumns: string[] = ['nombre', 'edad', 'raza', 'color', 'peso', "acciones"];
   dataSource = new MatTableDataSource<Mascota>(listMascotas);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
