@@ -12,20 +12,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from "@angular/router";
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Spinner } from "../../shared/spinner/spinner";
+import { HttpClientModule } from '@angular/common/http';
+import { MascotaService } from '../../services/mascota';
+import { error } from 'console';
 
-
-const listMascotas: Mascota[] = [
-  { nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13 },
-  { nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13 },
-  { nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13 },
-  { nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13 },
-  { nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13 },
-  { nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13 },
-  { nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13 },
-  { nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13 },
-  { nombre: 'Mimous Hermosous', edad: 4, raza: 'Gato Peludo', color: 'Negro', peso: 10 }
-
-];
 
 @Component({
   standalone: true,
@@ -47,18 +37,25 @@ const listMascotas: Mascota[] = [
 })
 export class ListadoMascotas implements AfterViewInit {
   displayedColumns: string[] = ['nombre', 'edad', 'raza', 'color', 'peso', "acciones"];
-  dataSource = new MatTableDataSource<Mascota>(listMascotas);
+  dataSource = new MatTableDataSource<Mascota>();
   loading: boolean = false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  private _snackBar = inject(MatSnackBar);
+  constructor(private _snackBar: MatSnackBar, private _mascotaService: MascotaService) { };
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-    this.paginator._intl.itemsPerPageLabel = 'Items por página'
+    if (this.dataSource.data.length > 0) {
+      this.paginator._intl.itemsPerPageLabel = 'Items por página'
+    }
+
     this.dataSource.sort = this.sort;
+  }
+
+  ngOnInit(): void {
+    this.obtenerMascotas();
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -67,6 +64,18 @@ export class ListadoMascotas implements AfterViewInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  obtenerMascotas() {
+    this.loading = true;
+    this._mascotaService.getMascotas().subscribe(data => {
+      this.loading = false;
+      this.dataSource.data = data;
+    }, /* error => {
+      this.loading = false
+      alert("ups, ocurrio un error")
+    } */
+    )
   }
 
   eliminarMascota() {
